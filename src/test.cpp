@@ -9,9 +9,9 @@ int main (int argc, const char * argv[])
 {
     VideoCapture cap;
     cap.open("../peopleInMarket.mp4");
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-
+    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+	return 1;
     if (!cap.isOpened())
         return -1;
 
