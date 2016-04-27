@@ -26,7 +26,8 @@ int main (int argc, const char * argv[]){
 
     while (true){
 
-        img = imread("../walkingPeople.jpeg");
+        img = imread("../walkingPeople.jpeg",CV_LOAD_IMAGE_GRAYSCALE);
+
 
         if (!img.data){
             cerr<<"Couldn't open image"<<endl;
