@@ -44,7 +44,7 @@ int main (int argc, const char * argv[])
 
         for (i=0; i<found_filtered.size(); i++)
         {
-            Rect r = found_filtered[i];
+            Rect r = found_filtered[i];4
             r.x += cvRound(r.width*0.1);
         r.width = cvRound(r.width*0.8);
         r.y += cvRound(r.height*0.07);
