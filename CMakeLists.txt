@@ -17,5 +17,7 @@ set( NAME_SRC
 #link_directories( ${CMAKE_BINARY_DIR}/bin)
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 add_executable( run ${NAME_SRC} ${NAME_HEADERS} )
+add_executable(hogGpu src/hogGpu.cpp)
 
-target_link_libraries( run ${OpenCV_LIBS} )
+target_link_libraries(run ${OpenCV_LIBS} )
+target_link_libraries(hogGpu ${OpenCV_LIBS} )
