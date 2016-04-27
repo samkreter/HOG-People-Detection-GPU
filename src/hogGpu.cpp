@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>
 // #include "opencv2/highgui/highgui.hpp"
 // #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/gpu/gpu.hpp"
 
 using namespace cv;
 using namespace std;
@@ -23,8 +24,12 @@ int main (int argc, const char * argv[])
     while (true){
         cap >> img;
 
-        if (img.empty())
-            continue;
+        img = imread("../walkingPeople.jpeg");
+
+        if (!img.data){
+            cerr<<"Couldn't open image"<<endl;
+            return -1;
+        }
 
         //resizing the video since it's so massive
         resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
@@ -54,7 +59,7 @@ int main (int argc, const char * argv[])
         if(found_filtered.size() > 0){
             cout<<"Rec: " << found_filtered[0].x << endl;
         }
-
+        imwrite("tracking.jpeg",img);
         //imshow("opencv", img);
         if (waitKey(10)>=0)
             break;
