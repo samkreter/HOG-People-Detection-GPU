@@ -8,6 +8,7 @@
 using namespace cv;
 using namespace std;
 
+int findObject(vector<Rect> found, Mat img,string filename);
 
 
 int main (int argc, const char * argv[]){
@@ -45,39 +46,16 @@ int main (int argc, const char * argv[]){
 
         //comput for the cpu
         cpu_hog.detectMultiScale(img, found_cpu, 0, Size(8,8), Size(32,32), 1.05, 2);
-        size_t i, j;
-
-        for (i=0; i<found.size(); i++)
-        {
-            Rect r = found[i];
-            for (j=0; j<found.size(); j++)
-                if (j!=i && (r & found[j]) == r)
-                    break;
-            if (j== found.size())
-                found_filtered.push_back(r);
-        }
-
-        for (i=0; i<found_filtered.size(); i++)
-        {
-            Rect r = found_filtered[i];
-            r.x += cvRound(r.width*0.1);
-        r.width = cvRound(r.width*0.8);
-        r.y += cvRound(r.height*0.07);
-        r.height = cvRound(r.height*0.8);
-        rectangle(img, r.tl(), r.br(), Scalar(0,255,0), 3);
-        }
-        if(found_filtered.size() > 0){
-            cout<<"Rec: " << found_filtered[0].x << endl;
-        }
-        imwrite("tracking.jpeg",img);
+        findObject(found_cpu,img,"tracking_cpu.jpeg");
+        findObject(found_gpu,img,"tracking_gpu.jpeg");
 
     }
     return 0;
 }
 
-int findObject(vector<Rec> found, Mat img,string filename){
+int findObject(vector<Rect> found, Mat img,string filename){
     size_t j = 0, i = 0;
-    vector<Rec> found_filtered;
+    vector<Rect> found_filtered;
 
     for (i=0; i<found.size(); i++){
         Rect r = found[i];
