@@ -246,7 +246,7 @@ App::App(const Args& s)
          << "\t4/r - increase/decrease hit threshold\n"
          << endl;
 
-    use_gpu = true;
+    use_gpu = false;
     make_gray = args.make_gray;
     scale = args.scale;
     gr_threshold = args.gr_threshold;
