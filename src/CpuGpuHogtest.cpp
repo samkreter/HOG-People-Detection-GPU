@@ -419,7 +419,7 @@ void App::run()
                 putText(img_to_show, "Mode: CPU", Point(5, 25), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             putText(img_to_show, "FPS HOG: " + hogWorkFps(), Point(5, 65), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             putText(img_to_show, "FPS total: " + workFps(), Point(5, 105), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
-            imshow("opencv_gpu_hog", img_to_show);
+            imwrite("opencv_gpu_hog.jpeg", img_to_show);
 
             if (args.src_is_video || args.src_is_camera) vc >> frame;
             if (args.src_is_folder) {
@@ -450,7 +450,7 @@ void App::run()
                 video_writer << img;
             }
 
-            handleKey((char)waitKey(3));
+            //handleKey((char)waitKey(3));
         }
     }
 }
