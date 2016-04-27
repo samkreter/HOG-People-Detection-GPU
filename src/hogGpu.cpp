@@ -61,8 +61,13 @@ int main (int argc, const char * argv[]){
     findObject(found_cpu,img,"tracking_cpu.jpeg");
     cpu_time.end();
 
-    cout<<"cpu time: "<<cpu_time.get_elapse()<<" gpu time: "<<gpu_time.get_elapse()<<endl;
-    cout<<"Percent speed up is: "<<cpu_time.get_elapse()/gpu_time.get_elapse()<<endl;
+    vector<double> times;
+    times.push_back(cpu_time.get_elapse());
+    times.push_back(gpu_time.get_elapse());
+    times.push_back(cpu_time.get_elapse()/gpu_time.get_elapse());
+
+    cout<<"cpu time: "<<time.at(0)<<" gpu time: "<<times.at(1)<<endl;
+    cout<<"Percent speed up is: "<<times.at(2)<<endl;
 
     return 0;
 }
@@ -94,3 +99,5 @@ int findObject(vector<Rect> found, Mat img,string filename){
 
         imwrite(filename,img);
 }
+
+
