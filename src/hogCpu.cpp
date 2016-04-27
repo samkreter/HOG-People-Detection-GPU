@@ -8,22 +8,22 @@ using namespace std;
 
 int main (int argc, const char * argv[]){
 
-    // VideoCapture cap;
-    // cap.open("../peopleInMarket.mp4");
+    VideoCapture cap;
+    cap.open("../peopleInMarket.mp4");
     //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-    // if (!cap.isOpened())
-    //     return -1;
+    if (!cap.isOpened())
+        return -1;
 
     Mat img;
-    //namedWindow("opencv", CV_WINDOW_AUTOSIZE);
+    namedWindow("opencv", CV_WINDOW_AUTOSIZE);
     HOGDescriptor hog;
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 
     while (true){
-        //cap >> img;
-        img = imread("../walkingPeople.jpeg");
+        cap >> img;
+        //img = imread("../walkingPeople.jpeg");
 
         if (!img.data){
             cerr<<"Couldn't open image"<<endl;
@@ -58,8 +58,8 @@ int main (int argc, const char * argv[]){
         if(found_filtered.size() > 0){
             cout<<"Rec: " << found_filtered[0].x << endl;
         }
-        imwrite("tracking.jpeg",img);
-        //imshow("opencv", img);
+        //imwrite("tracking.jpeg",img);
+        imshow("opencv", img);
         // if (waitKey(10)>=0)
         //     break;
     }
