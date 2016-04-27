@@ -3,27 +3,27 @@
 // #include "opencv2/imgproc/imgproc.hpp"
 //#include "opencv2/gpu/gpu.hpp"
 #include "opencv2/core/cuda.hpp"
+#include "opencv2/cudaobjdetect.hpp"
 
 using namespace cv;
 using namespace std;
 
-int main (int argc, const char * argv[])
-{
-    VideoCapture cap;
-    cap.open("../peopleInMarket.mp4");
-    //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-	return 1;
-    if (!cap.isOpened())
-        return -1;
+
+
+int main (int argc, const char * argv[]){
+
+
 
     Mat img;
-    namedWindow("opencv", CV_WINDOW_AUTOSIZE);
-    HOGDescriptor hog;
-    hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
+    //init the descriptors
+    cv::Ptr<cv::cuda::HOG> gpu_hog = cv::cuda::HOG::create();
+    HOGDescriptor cpu_hog;
+
+    //set the svm to default people detector
+    gpu_hog->setSVMDetector(gpu_hog->getDefaultPeopleDetector());
+    cpu_hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 
     while (true){
-        cap >> img;
 
         img = imread("../walkingPeople.jpeg");
 
@@ -32,11 +32,11 @@ int main (int argc, const char * argv[])
             return -1;
         }
 
-        //resizing the video since it's so massive
-        resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
+        // //resizing the video since it's so massive
+        // resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
 
         vector<Rect> found, found_filtered;
-        hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2);
+        cpu_hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2);
         size_t i, j;
         for (i=0; i<found.size(); i++)
         {
@@ -61,9 +61,7 @@ int main (int argc, const char * argv[])
             cout<<"Rec: " << found_filtered[0].x << endl;
         }
         imwrite("tracking.jpeg",img);
-        //imshow("opencv", img);
-        if (waitKey(10)>=0)
-            break;
+
     }
     return 0;
 }
