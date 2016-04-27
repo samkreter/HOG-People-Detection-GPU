@@ -10,20 +10,18 @@ set( NAME_SRC
 )
 
 #set( NAME_HEADERS
-#     include/header.h
+#     include/timing.hpp
 #)
 
 find_package(CUDA)
-if(CUDA_FOUND)
-add_executable(CpuGpuHogtest src/CpuGpuHogtest.cpp)
-target_link_libraries(CpuGpuHogtest ${OpenCV_LIBS} )
-add_executable(hogGpu src/hogGpu.cpp)
-target_link_libraries(hogGpu ${OpenCV_LIBS})
-endif(CUDA_FOUND)
+    if(CUDA_FOUND)
+    add_executable(CpuGpuHogtest src/CpuGpuHogtest.cpp)
+    target_link_libraries(CpuGpuHogtest ${OpenCV_LIBS} )
 
-#INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR}/include )
-#link_directories( ${CMAKE_BINARY_DIR}/bin)
-#set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+    add_library(timing src/timing.cpp)
+    add_executable(hogGpu src/hogGpu.cpp)
+    target_link_libraries(hogGpu ${OpenCV_LIBS} timing)
+endif(CUDA_FOUND)
 
 
 add_executable( run ${NAME_SRC} ${NAME_HEADERS} )
