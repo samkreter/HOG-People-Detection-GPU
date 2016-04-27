@@ -1,28 +1,28 @@
 #include <opencv2/opencv.hpp>
-// #include "opencv2/highgui/highgui.hpp"
-// #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
 
 using namespace cv;
 using namespace std;
 
-int main (int argc, const char * argv[])
-{
+int main (int argc, const char * argv[]){
 
-    VideoCapture cap;
-    cap.open("../peopleInMarket.mp4");
+    // VideoCapture cap;
+    // cap.open("../peopleInMarket.mp4");
     //cap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
     //cap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
 
-    if (!cap.isOpened())
-        return -1;
+    // if (!cap.isOpened())
+    //     return -1;
 
     Mat img;
-    namedWindow("opencv", CV_WINDOW_AUTOSIZE);
+    //namedWindow("opencv", CV_WINDOW_AUTOSIZE);
     HOGDescriptor hog;
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 
     while (true){
-        cap >> img;
+        //cap >> img;
         img = imread("../walkingPeople.jpeg");
 
         if (!img.data){
@@ -60,8 +60,8 @@ int main (int argc, const char * argv[])
         }
         imwrite("tracking.jpeg",img);
         //imshow("opencv", img);
-        if (waitKey(10)>=0)
-            break;
+        // if (waitKey(10)>=0)
+        //     break;
     }
     return 0;
 }

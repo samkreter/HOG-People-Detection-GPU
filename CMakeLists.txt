@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED )
 set(CMAKE_CXX_FLAGS "--std=c++11 -Werror")
 
 set( NAME_SRC
-    src/test.cpp
+    src/hogCpu.cpp
 )
 
 #set( NAME_HEADERS
