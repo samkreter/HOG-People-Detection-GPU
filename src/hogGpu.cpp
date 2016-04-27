@@ -35,9 +35,18 @@ int main (int argc, const char * argv[]){
         // //resizing the video since it's so massive
         // resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
 
-        vector<Rect> found, found_filtered;
-        cpu_hog.detectMultiScale(img, found, 0, Size(8,8), Size(32,32), 1.05, 2);
+        vector<Rect> found_cpu, found_filtered_cpu;
+        vector<Rect> found_gpu, found_filtered_gpu;
+
+        //comput for the gpu
+        cuda::GpuMat gpu_img;
+        gpu_img.upload(img);
+        gpu_hog->detectMultiScale(gpu_img, found_gpu);
+
+        //comput for the cpu
+        cpu_hog.detectMultiScale(img, found_cpu, 0, Size(8,8), Size(32,32), 1.05, 2);
         size_t i, j;
+
         for (i=0; i<found.size(); i++)
         {
             Rect r = found[i];
@@ -64,4 +73,32 @@ int main (int argc, const char * argv[]){
 
     }
     return 0;
+}
+
+int findObject(vector<Rec> found, Mat img,string filename){
+    size_t j = 0, i = 0;
+    vector<Rec> found_filtered;
+
+    for (i=0; i<found.size(); i++){
+        Rect r = found[i];
+        for (j=0; j<found.size(); j++){
+            if (j!=i && (r & found[j]) == r){
+                break;
+            }
+        }
+        if (j== found.size()){
+            found_filtered.push_back(r);
+        }
+    }
+
+        for (i=0; i<found_filtered.size(); i++){
+            Rect r = found_filtered[i];
+            r.x += cvRound(r.width*0.1);
+            r.width = cvRound(r.width*0.8);
+            r.y += cvRound(r.height*0.07);
+            r.height = cvRound(r.height*0.8);
+            rectangle(img, r.tl(), r.br(), Scalar(0,255,0), 3);
+        }
+
+        imwrite(filename,img);
 }
