@@ -4,6 +4,7 @@
 //#include "opencv2/gpu/gpu.hpp"
 #include "opencv2/core/cuda.hpp"
 #include "opencv2/cudaobjdetect.hpp"
+#include "../include/timing.hpp"
 
 using namespace cv;
 using namespace std;
@@ -15,7 +16,7 @@ int main (int argc, const char * argv[]){
 
 
 
-    Mat img;
+    Mat img, temp;
     //init the descriptors
     cv::Ptr<cv::cuda::HOG> gpu_hog = cv::cuda::HOG::create();
     HOGDescriptor cpu_hog;
@@ -24,33 +25,45 @@ int main (int argc, const char * argv[]){
     gpu_hog->setSVMDetector(gpu_hog->getDefaultPeopleDetector());
     cpu_hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 
-    while (true){
 
-        img = imread("../walkingPeople.jpeg",CV_LOAD_IMAGE_GRAYSCALE);
+    temp = imread("../walkingPeople.jpeg");
 
 
-        if (!img.data){
-            cerr<<"Couldn't open image"<<endl;
-            return -1;
-        }
+    cvtColor( temp,img,  CV_RGB2GRAY);
 
-        // //resizing the video since it's so massive
-        // resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
 
-        vector<Rect> found_cpu, found_filtered_cpu;
-        vector<Rect> found_gpu, found_filtered_gpu;
 
-        //comput for the gpu
-        cuda::GpuMat gpu_img;
-        gpu_img.upload(img);
-        gpu_hog->detectMultiScale(gpu_img, found_gpu);
-
-        //comput for the cpu
-        cpu_hog.detectMultiScale(img, found_cpu, 0, Size(8,8), Size(32,32), 1.05, 2);
-        findObject(found_cpu,img,"tracking_cpu.jpeg");
-        findObject(found_gpu,img,"tracking_gpu.jpeg");
-
+    if (!img.data){
+        cerr<<"Couldn't open image"<<endl;
+        return -1;
     }
+
+    // //resizing the video since it's so massive
+    // resize(img, img, Size(640, 360), 0, 0, INTER_CUBIC);
+
+    vector<Rect> found_cpu, found_filtered_cpu;
+    vector<Rect> found_gpu, found_filtered_gpu;
+    Timing gpu_time;
+    Timing cpu_time;
+
+    gpu_time.start();
+    //comput for the gpu
+    cuda::GpuMat gpu_img;
+    gpu_img.upload(img);
+    gpu_hog->detectMultiScale(gpu_img, found_gpu);
+    findObject(found_gpu,img,"tracking_gpu.jpeg");
+
+    gpu_time.end();
+
+    cpu_time.start();
+    //comput for the cpu
+    cpu_hog.detectMultiScale(img, found_cpu, 0, Size(8,8), Size(32,32), 1.05, 2);
+    findObject(found_cpu,img,"tracking_cpu.jpeg");
+    cpu_time.end();
+
+    cout<<"cpu time: "<<cpu_time.get_elapse()<<" gpu time: "<<gpu_time.get_elapse()<<endl;
+    cout<<"Percent speed up is: "<<cpu_time.get_elapse()/gpu_time.get_elapse()<<endl;
+
     return 0;
 }
 
