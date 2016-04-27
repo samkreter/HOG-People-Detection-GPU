@@ -58,8 +58,8 @@ int main (int argc, const char * argv[]){
 
         //imwrite("tracking.jpeg",img);
         imshow("opencv", img);
-        // if (waitKey(10)>=0)
-        //     break;
+        if (waitKey(10)>=0)
+            break;
     }
     return 0;
 }
