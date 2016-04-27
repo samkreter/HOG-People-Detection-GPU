@@ -28,10 +28,10 @@ int main (int argc, const char * argv[]){
 
     temp = imread("../walkingPeople.jpeg");
 
-
+    cout<<"width: "<<temp.rows<<"hieght: "<<temp.cols<<endl;
     cvtColor( temp,img,  CV_RGB2GRAY);
 
-
+    cout<<"width: "<<img.rows<<"hieght: "<<img.cols<<endl;
 
     if (!img.data){
         cerr<<"Couldn't open image"<<endl;
