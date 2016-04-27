@@ -2,6 +2,9 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <iostream>
+#include <string>
+#include<iterator>
 
 class Timing{
 
@@ -13,7 +16,7 @@ public:
     void start();
     void end();
     double get_elapse();
-    int output_timing_vector_to_file(std::string filename, std::vector<double> vec, int append);
+    int output_timing_vector_to_file(std::string filename, std::vector<double> vec, int append,int pos);
 
 
 private:

@@ -66,8 +66,9 @@ int main (int argc, const char * argv[]){
     times.push_back(gpu_time.get_elapse());
     times.push_back(cpu_time.get_elapse()/gpu_time.get_elapse());
 
-    cout<<"cpu time: "<<time.at(0)<<" gpu time: "<<times.at(1)<<endl;
+    cout<<"cpu time: "<<times.at(0)<<" gpu time: "<<times.at(1)<<endl;
     cout<<"Percent speed up is: "<<times.at(2)<<endl;
+    cpu_time.output_timing_vector_to_file("gcpu-standard.txt",times,1,0);
 
     return 0;
 }

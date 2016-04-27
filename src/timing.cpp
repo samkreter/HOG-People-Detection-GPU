@@ -12,7 +12,7 @@ double Timing::get_elapse(){
     return this->_timeElapse.count();
 }
 
-int Timing::output_timing_vector_to_file(std::string filename, std::vector<double> vec, int append){
+int Timing::output_timing_vector_to_file(std::string filename, std::vector<double> vec, int append,int pos = -1){
     std::fstream outputFile;
     std::ostringstream ossVec;
 
@@ -25,9 +25,10 @@ int Timing::output_timing_vector_to_file(std::string filename, std::vector<doubl
 
     if(outputFile.is_open()){
 
-#ifdef POSITION
-        vec.insert(vec.begin(),POSITION);
-#endif
+        if(pos != -1){
+            vec.insert(vec.begin(),pos);
+        }
+
 
         std::copy(vec.begin(), vec.end()-1,
         std::ostream_iterator<float>(ossVec, ","));
