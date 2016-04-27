@@ -246,7 +246,7 @@ App::App(const Args& s)
          << "\t4/r - increase/decrease hit threshold\n"
          << endl;
 
-    use_gpu = false;
+    use_gpu = true;
     make_gray = args.make_gray;
     scale = args.scale;
     gr_threshold = args.gr_threshold;
@@ -402,7 +402,7 @@ void App::run()
                 cpu_hog.detectMultiScale(img, found, hit_threshold, win_stride,
                                          Size(0, 0), scale, gr_threshold);
             }
-
+            cout<<found.size()<<": size"<<endl;
             size_t j = 0, i = 0;
             for (i=0; i<found.size(); i++){
                 Rect r = found[i];
@@ -414,7 +414,7 @@ void App::run()
             }
 
             for (int i=0; i<found_filtered.size(); i++){
-
+                cout<<"testing";
                 Rect r = found_filtered[i];
                 r.x += cvRound(r.width*0.1);
                 r.width = cvRound(r.width*0.8);
