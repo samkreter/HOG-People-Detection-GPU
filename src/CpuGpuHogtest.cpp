@@ -403,7 +403,7 @@ void App::run()
                                          Size(0, 0), scale, gr_threshold);
             }
 
-            int j = 0, i = 0;
+            size_t j = 0, i = 0;
             for (i=0; i<found.size(); i++){
                 Rect r = found[i];
                 for (j=0; j<found.size(); j++)
@@ -414,6 +414,7 @@ void App::run()
             }
 
             for (int i=0; i<found_filtered.size(); i++){
+
                 Rect r = found_filtered[i];
                 r.x += cvRound(r.width*0.1);
                 r.width = cvRound(r.width*0.8);
@@ -435,8 +436,9 @@ void App::run()
                 putText(img_to_show, "Mode: GPU", Point(5, 25), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             else
                 putText(img_to_show, "Mode: CPU", Point(5, 25), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
-            putText(img_to_show, "FPS HOG: " + hogWorkFps(), Point(5, 65), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
-            putText(img_to_show, "FPS total: " + workFps(), Point(5, 105), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
+
+            //putText(img_to_show, "FPS HOG: " + hogWorkFps(), Point(5, 65), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
+            //putText(img_to_show, "FPS total: " + workFps(), Point(5, 105), FONT_HERSHEY_SIMPLEX, 1., Scalar(255, 100, 0), 2);
             imwrite("opencv_gpu_hog.jpeg", img_to_show);
 
             if (args.src_is_video || args.src_is_camera) vc >> frame;
