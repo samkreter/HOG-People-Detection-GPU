@@ -55,9 +55,7 @@ int main (int argc, const char * argv[]){
         r.height = cvRound(r.height*0.8);
         rectangle(img, r.tl(), r.br(), Scalar(0,255,0), 3);
         }
-        if(found_filtered.size() > 0){
-            cout<<"Rec: " << found_filtered[0].x << endl;
-        }
+
         //imwrite("tracking.jpeg",img);
         imshow("opencv", img);
         // if (waitKey(10)>=0)
