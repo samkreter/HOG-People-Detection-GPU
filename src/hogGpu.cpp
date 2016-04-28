@@ -6,6 +6,8 @@
 #include "opencv2/cudaobjdetect.hpp"
 #include "../include/timing.hpp"
 
+#define RESIZEFAC 20
+
 using namespace cv;
 using namespace std;
 
@@ -14,7 +16,10 @@ int findObject(vector<Rect> found, Mat img,string filename);
 
 int main (int argc, const char * argv[]){
 
-
+    int resizeFac = 1;
+    if(argc >= 2){
+        resizeFac = atoi(argv[1]);
+    }
 
     Mat img, temp;
     //init the descriptors
@@ -28,7 +33,12 @@ int main (int argc, const char * argv[]){
 
     temp = imread("../walkingPeople.jpeg");
 
-    cout<<"width: "<<temp.rows<<"hieght: "<<temp.cols<<endl;
+
+    //to change the size for testing
+    Size tempSize(temp.rows*resizeFac,temp.cols*resizeFac);
+    resize(temp,temp,tempSize);
+
+
     cvtColor( temp,img,  CV_RGB2GRAY);
 
     cout<<"width: "<<img.rows<<"hieght: "<<img.cols<<endl;
@@ -62,13 +72,18 @@ int main (int argc, const char * argv[]){
     cpu_time.end();
 
     vector<double> times;
+
+    times.push_back(resizeFac);
+    times.push_back(temp.rows);
+    times.push_back(temp.cols);
     times.push_back(cpu_time.get_elapse());
     times.push_back(gpu_time.get_elapse());
     times.push_back(cpu_time.get_elapse()/gpu_time.get_elapse());
 
-    cout<<"cpu time: "<<times.at(0)<<" gpu time: "<<times.at(1)<<endl;
-    cout<<"Percent speed up is: "<<times.at(2)<<endl;
-    cpu_time.output_timing_vector_to_file("gcpu-standard.txt",times,1,0);
+    cout<<"cpu time: "<<times.at(3)<<" gpu time: "<<times.at(4)<<endl;
+    cout<<"Percent speed up is: "<<times.at(5)<<endl;
+
+    cpu_time.output_timing_vector_to_file("timings.txt",times,1,1);
 
     return 0;
 }
