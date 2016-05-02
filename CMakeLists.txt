@@ -15,14 +15,11 @@ set( NAME_SRC
 
 find_package(CUDA)
     if(CUDA_FOUND)
-    add_executable(CpuGpuHogtest src/CpuGpuHogtest.cpp)
-    target_link_libraries(CpuGpuHogtest ${OpenCV_LIBS} )
-
     add_library(timing src/timing.cpp)
-    add_executable(hogGpu src/hogGpu.cpp)
-    target_link_libraries(hogGpu ${OpenCV_LIBS} timing)
+    add_executable(GpuCpuTest src/hogGpu.cpp)
+    target_link_libraries(GpuCpuTest ${OpenCV_LIBS} timing)
 endif(CUDA_FOUND)
 
 
-add_executable( run ${NAME_SRC} ${NAME_HEADERS} )
-target_link_libraries(run ${OpenCV_LIBS} )
+add_executable( cpuRun ${NAME_SRC} ${NAME_HEADERS} )
+target_link_libraries(cpuRun ${OpenCV_LIBS} )
